@@ -17,7 +17,8 @@
 		while($r=mysqli_fetch_assoc($q)){
 			echo "<tr>";
 			echo "<td>".$r['imie']." ".$r['nazwisko']."</td>";
-			echo '<td><a href="wizyty_lekarza.php?idl='.$r['id_lekarza'].'"><button type="button">Wizyty</button></a>';
+			echo '<td><a href="wizyty_lekarza.php?idl='.$r['id_lekarza'].'"><button type="button">Wizyty</button></a></td>';
+			echo '<td><a href="terminy_lekarza.php?idl='.$r['id_lekarza'].'"><button type="button">Terminy przyjęć</a></td>';
 			echo "</tr>";
 		}
 	?>
