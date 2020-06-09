@@ -22,8 +22,8 @@
 		
 		$zap="select wizyty.id_wizyty,wizyty.id_pacjenta,data,time_format(godzina_rozpoczecia,\"%H:%i\") as godzina_rozpoczecia,time_format(godzina_zakonczenia,\"%H:%i\") as godzina_zakonczenia,imie,nazwisko,nazwa_poradni
 		from wizyty
-		join terminy_przyjec on wizyty.id_lekarza=terminy_przyjec.id_lekarza and wizyty.godzina_rozpoczecia>=terminy_przyjec.godzina_otwarcia and wizyty.godzina_zakonczenia<=terminy_przyjec.godzina_zamkniecia and terminy_przyjec.dzien_tygodnia=weekday(wizyty.data)+1
 		join pacjenci on wizyty.id_pacjenta=pacjenci.id_pacjenta
+		join terminy_przyjec on wizyty.id_lekarza=terminy_przyjec.id_lekarza and wizyty.godzina_rozpoczecia>=terminy_przyjec.godzina_otwarcia and wizyty.godzina_zakonczenia<=terminy_przyjec.godzina_zamkniecia and terminy_przyjec.dzien_tygodnia=weekday(wizyty.data)+1
 		where wizyty.id_lekarza=$idl and data=\"$d\"";
 		
 		$q=mysqli_fetch_assoc(mysqli_query($l,"select time_format(min(godzina_otwarcia),\"%H\") as godzina_otwarcia,time_format(max(godzina_zamkniecia),\"%H\") as godzina_zamkniecia from terminy_przyjec where id_lekarza=$idl and dzien_tygodnia=weekday(\"$d\")+1"));
