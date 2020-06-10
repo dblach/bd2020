@@ -25,8 +25,34 @@
 			$gr=$q['godzina_rozpoczecia'];
 			$gz=$q['godzina_zakonczenia'];
 			$data=date_format(date_create($q['data']),'Y-m-d');	
-			if($data>1000)
-				$p=mysqli_fetch_array(mysqli_query($l,"select nazwa_poradni from terminy_przyjec where id_lekarza=$idl and dzien_tygodnia=weekday(\"$data\")+1 and godzina_otwarcia<=\"$gr\" and godzina_zamkniecia>=\"$gz\""))[0];
+			if($data>1000){
+				$q=mysqli_query($l,"select nazwa_poradni from terminy_przyjec where id_lekarza=$idl and dzien_tygodnia=weekday(\"$data\")+1 and godzina_otwarcia<=\"$gr\" and godzina_zamkniecia>=\"$gz\"");
+				if(mysqli_num_rows($q)==0) $p='NIEPRAWIDŁOWA'; else $p=mysqli_fetch_array($q)[0];
+			}
+		}
+		else{
+			utworz_wizyte();
+		}
+		
+		function poradnia_dodaj_informacje(){
+			global $p;
+			if($p=='NIEPRAWIDŁOWA'){
+				echo '<td>';
+				echo '-> Ustaw datę lub godzinę tak, by pokrywała się z terminem przyjęć wybranego lekarza';
+				echo '</td>';
+			}
+		}
+		
+		function utworz_wizyte(){
+			include "redirect.php";
+			global $l;
+			$idl=mysqli_fetch_array(mysqli_query($l,"select min(id_lekarza) from lekarze"))[0];
+			$idp=mysqli_fetch_array(mysqli_query($l,"select min(id_pacjenta) from pacjenci"))[0];
+			
+			echo $idl.' '.$idp;
+			$q=mysqli_query($l,"insert into wizyty(id_wizyty,id_lekarza,id_pacjenta,data,godzina_rozpoczecia,godzina_zakonczenia) values(null,\"$idl\",\"$idp\",\"1001-01-01\",\"00:00:00\",\"00:30:00\")");
+			$idn=mysqli_fetch_array(mysqli_query($l,"select max(id_wizyty) from wizyty"))[0];
+			redirect("edytuj_wizyte.php?idw=$idn");
 		}
 	?>
 	
@@ -43,10 +69,13 @@
 			<tr>
 				<td>Poradnia:</td>
 				<td><input type="text" disabled="true" name="poradnia" value="<?php echo $p;?>"></td>
+				<td></td>
+				<?php poradnia_dodaj_informacje();?>
 			</tr>
 			<tr>
 				<td>Pacjent:</td>
 				<td><input type="text" disabled="true" name="pacjent" value="<?php echo $p_in;?>"></td>
+				<td><a href="edytuj_wizyte_zmien_pacjenta.php?idw=<?php echo $idw;?>">Zmień</a></td>
 			</tr>
 			<tr>
 				<td>Data:</td>

@@ -63,7 +63,9 @@
 	
 	<form method="post" action="edytuj_wizyte_zmien_date_zapisz.php">
 		<input type="hidden" name="id_wizyty" value="<?php echo $idw;?>"/>
+		<input type="hidden" name="id_lekarza" value="<?php echo $idl;?>"/>
 		Data: <input type="date" name="data" value="<?php echo $data;?>"/>
+		<input type="submit" value="Zapisz"/>
 	</form>
 	
 	<hr>
