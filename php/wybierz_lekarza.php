@@ -8,6 +8,14 @@
 <body>
 	<?php include "polaczenie.php"; ?>
 	
+	<a href="index.php">Strona główna</a>
+	&nbsp;&gt;&nbsp;
+	Zarządzanie lekarzami
+	&nbsp;&gt;&nbsp;
+	Wyświetl lekarzy
+	
+	<hr>
+	
 	<h1>Wybór lekarza</h1>
 	<br>
 	

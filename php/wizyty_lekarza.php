@@ -30,10 +30,10 @@
 			
 		// ================================================================================================
 			
-		//$go=$q['godzina_otwarcia']-1;
+		$go=$q['godzina_otwarcia']-1;
 		//$gz=$q['godzina_zamkniecia']+1;
 		$gz=23; //problem z wyświetlaniem
-		$go=8;
+		//$go=8;
 		
 		// ================================================================================================
 		
@@ -59,6 +59,15 @@
 		}
 	?>
 	
+	<a href="index.php">Strona główna</a>
+	&nbsp;&gt;&nbsp;
+	Zarządzanie lekarzami
+	&nbsp;&gt;&nbsp;
+	<a href="wybierz_lekarza.php">Wyświetl lekarzy</a>
+	&nbsp;&gt;&nbsp;
+	Kalendarz wizyt
+	
+	<hr>
 	
 	<h1>Kalendarz wizyt lekarza: <?php echo $n['imie'].' '.$n['nazwisko'] ?></h1>
 	<br>
@@ -71,6 +80,7 @@
 			<input type="hidden" name="idl" value="<?php echo $idl;?>">
 			<input type="submit" value="Zmień">
 		</form>
+		<a href="edytuj_wizyte.php?idw=0&idl=<?php echo $idl;?>&data=<?php echo $d;?>"><button type="button">Dodaj nową wizytę</button></a>
 	</h3>
 	
 	<hr>
@@ -97,7 +107,7 @@
 				echo '<td>'.$r['godzina_rozpoczecia'].' - '.$r['godzina_zakonczenia'].'</td>';
 				echo '<td>'.$r['nazwisko'].' '.$r['imie'].'</td>';
 				echo '<td>'.$r['nazwa_poradni'].'</td>';
-				echo '<td><a href="edytuj_wizyte.php?idw='.$r['id_wizyty'].'">Edytuj</a></td>';
+				echo '<td><a href="edytuj_wizyte.php?idw='.$r['id_wizyty']."&target=wizyty_lekarza.php?idl=$idl&d=$d\">Edytuj</a></td>";
 				echo '</tr>';
 			}
 		?>
@@ -114,7 +124,7 @@
 			<?php add_appointments(); ?>
 			var renderer=new Timetable.Renderer(timetable);
 			renderer.draw('.timetable');
-			add_onclick();
+			add_onclick("&target='wizyty_lekarza.php?d=<?php echo $d;?>&idl=<?php echo $idl;?>'");
 		</script>
 	</div>
 

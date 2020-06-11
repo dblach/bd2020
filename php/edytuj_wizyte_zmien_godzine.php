@@ -21,7 +21,7 @@
 		function ustaw_godziny(){
 			global $l;
 			global $idl;
-			$go=mysqli_fetch_array(mysqli_query($l,"select time_format(min(godzina_otwarcia),\"%H\") from terminy_przyjec where id_lekarza=$idl"))[0];
+			$go=mysqli_fetch_array(mysqli_query($l,"select time_format(min(godzina_otwarcia),\"%H\") from terminy_przyjec where id_lekarza=$idl"))[0]-1;
 			$gz=23;
 			return "$go,$gz";
 		}
