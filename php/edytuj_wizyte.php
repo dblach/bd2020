@@ -66,6 +66,9 @@
 			redirect("edytuj_wizyte.php?idw=$idn");
 		}
 	?>
+
+	<a href="index.php">Strona główna</a>
+	<hr>
 	
 	<h1>Edycja wizyty</h1>
 	<br>

@@ -43,6 +43,9 @@
 	Wyszukaj: <input type="text" id="search_text" onchange="search();"/>
 	&nbsp;
 	<button type="button" onclick="search_clear();">Czyść</button>
+	<?php
+		if($target=='edytuj_pacjenta.php?') echo "<a href=\"edytuj_pacjenta.php?&idp=0\"><button type=\"button\">Dodaj nowego</button></a>";
+	?>
 	<br>
 	<br>
 	
