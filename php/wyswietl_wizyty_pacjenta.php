@@ -21,7 +21,7 @@
 		}
 		$dk=date('Y-m-d',strtotime($dp.'+ 7 days'));
 		$pacjent_imienazwisko=mysqli_fetch_array(mysqli_query($l,"select concat_ws(' ',imie,nazwisko) from pacjenci where id_pacjenta=$idp"))[0];
-		$gp=mysqli_fetch_array(mysqli_query($l,"select min(godzina_rozpoczecia) from wizyty where id_pacjenta=$idp and data>=\"$dp\" and data<=\"$dk\""))[0]-1;
+		$gp=mysqli_fetch_array(mysqli_query($l,"select time_format(min(godzina_rozpoczecia),\"%H\") from wizyty where id_pacjenta=$idp and data>=\"$dp\" and data<=\"$dk\""))[0]-1;
 		$gk=23;
 		$dt=['','Pon ','Wt ','Śr ','Czw ','Pt ','So ','N '];
 		$z="select id_wizyty,wizyty.id_lekarza,data,time_format(godzina_rozpoczecia,\"%H:%i\") as godzina_rozpoczecia,time_format(godzina_zakonczenia,\"%H:%i\") as godzina_zakonczenia,concat_ws(' ',nazwisko,imie) as lekarz,weekday(data)+1 as dt,date_format(data,\"%e.%m\") as da from wizyty join lekarze on lekarze.id_lekarza=wizyty.id_lekarza where id_pacjenta=$idp and data>=\"$dp\" and data<=\"$dk\" order by data";
