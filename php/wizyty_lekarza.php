@@ -80,7 +80,7 @@
 			<input type="hidden" name="idl" value="<?php echo $idl;?>">
 			<input type="submit" value="Zmień">
 		</form>
-		<a href="edytuj_wizyte.php?idw=0&idl=<?php echo $idl;?>&data=<?php echo $d;?>"><button type="button">Dodaj nową wizytę</button></a>
+		<a href="wybierz_pacjenta.php?target=edytuj_wizyte_zmien_lekarza.php?idw=0&nowa=1&idl=<?php echo $idl;?>"><button type="button">Dodaj nową wizytę</button></a>
 	</h3>
 	
 	<hr>

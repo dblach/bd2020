@@ -93,6 +93,8 @@
 		do: <input type="date" name="dk" disabled="true" value="<?php echo $dk;?>"/>
 		&nbsp;
 		<input type="submit" value="Zmień"/>
+		&nbsp;
+		<a href="edytuj_wizyte_zmien_lekarza.php?idp=<?php echo $idp;?>&idw=0&nowa=1&nazwa_poradni="><button type="button">Dodaj nową</button></a>
 	</form>
 
 	<hr>

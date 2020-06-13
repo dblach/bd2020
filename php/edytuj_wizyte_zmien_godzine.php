@@ -8,16 +8,24 @@
 	<script src="scripts/timetable.js"></script>
 	<script src="scripts/tabs.js"></script>
 	
-</head>
 
+</head>
 <body>
 	<?php
 		include "polaczenie.php";
-		$idw=$_GET['idw'];
-		$idl=mysqli_fetch_array(mysqli_query($l,"select id_lekarza from wizyty where id_wizyty=$idw"))[0];
-		$data=mysqli_fetch_array(mysqli_query($l,"select data from wizyty where id_wizyty=$idw"))[0];
-		$gr=mysqli_fetch_array(mysqli_query($l,"select time_format(godzina_rozpoczecia,\"%H:%i\") from wizyty where id_wizyty=$idw"))[0];
-		
+		$nowa=$_GET['nowa'];
+		if($nowa=='0'){
+			$idw=$_GET['idw'];
+			$gr=mysqli_fetch_array(mysqli_query($l,"select time_format(godzina_rozpoczecia,\"%H:%i\") from wizyty where id_wizyty=$idw"))[0];
+		}
+		else{
+			$idw=0;
+		}
+		$idl=substr($_GET['lek'],0,strpos($_GET['lek'],','));
+		$por=substr($_GET['lek'],strpos($_GET['lek'],',')+1,strlen($_GET['lek']));
+		$data=substr($_GET['data'],0,strpos($_GET['data'],';'));
+		$idp=$_GET['idp'];
+				
 		function ustaw_godziny(){
 			global $l;
 			global $idl;
@@ -30,7 +38,9 @@
 			global $l;
 			global $idl;
 			global $data;
-			add_events("select time_format(godzina_otwarcia,\"%H:%i\") as godzina_otwarcia,time_format(godzina_zamkniecia,\"%H:%i\") as godzina_zamkniecia,nazwa_poradni from terminy_przyjec where id_lekarza=$idl and dzien_tygodnia=weekday(\"$data\")+1","Terminy przyjęć");
+			global $por;
+
+			add_events("select time_format(godzina_otwarcia,\"%H:%i\") as godzina_otwarcia,time_format(godzina_zamkniecia,\"%H:%i\") as godzina_zamkniecia,nazwa_poradni from terminy_przyjec where id_lekarza=$idl and dzien_tygodnia=weekday(\"$data\")+1 and nazwa_poradni=\"$por\"","Terminy przyjęć");
 			add_events("select time_format(godzina_rozpoczecia,\"%H:%i\") as godzina_otwarcia,time_format(godzina_zakonczenia,\"%H:%i\") as godzina_zamkniecia,\"\" as nazwa_poradni from wizyty where id_lekarza=$idl and data=\"$data\"","Zaplanowane wizyty");
 		}
 		
@@ -68,7 +78,13 @@
 	<br>
 	<form action="edytuj_wizyte_zmien_godzine_zapisz.php" method="post">
 		<input type="hidden" name="id_wizyty" value="<?php echo $idw;?>"/>
-		<input type="time" name="godzina_rozpoczecia" value="<?php echo $gr;?>"/>
+		<input type="hidden" name="id_lekarza" value="<?php echo $idl;?>"/>
+		<input type="hidden" name="id_pacjenta" value="<?php echo $idp;?>"/>
+		<input type="hidden" name="lek" value="<?php echo $_GET['lek'];?>"/>
+		<input type="hidden" name="nowa" value="<?php echo $nowa;?>"/>
+		<input type="hidden" name="data" value="<?php echo $data;?>"/>
+		Wybrana data: &nbsp; <?php echo $data;?><br>
+		Godzina:&nbsp;<input type="time" name="godzina_rozpoczecia" value="<?php echo $gr;?>"/>
 		<input type="submit" value="Zapisz"/>
 	</form>
 	

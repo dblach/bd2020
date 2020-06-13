@@ -8,7 +8,9 @@
 <body>
 	<?php
 		include "polaczenie.php";
-		$target=$_GET['target'];
+		$target='';
+		foreach($_GET as $k=>$v) $target.=$k.'='.$v.'&';
+		$target=str_replace('target=','',$target);
 		
 		function pobierz_pacjentow(){
 			global $l;

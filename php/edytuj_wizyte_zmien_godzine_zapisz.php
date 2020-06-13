@@ -1,10 +1,16 @@
 <?php
 	include "polaczenie.php";
-	$idw=$_POST['id_wizyty'];
+	
+	$nowa=$_POST['nowa'];
+	if($nowa=='0') $idw=$_POST['id_wizyty'];
 	$gp=$_POST['godzina_rozpoczecia'];
 	$gk=date('H:i',strtotime($gp.'+30 minutes'));
-	$d=mysqli_fetch_array(mysqli_query($l,"select data from wizyty where id_wizyty=$idw"))[0];
-	$idl=mysqli_fetch_array(mysqli_query($l,"select id_lekarza from wizyty where id_wizyty=$idw"))[0];
+	//$d=mysqli_fetch_array(mysqli_query($l,"select data from wizyty where id_wizyty=$idw"))[0];
+	$d=$_POST['data'];
+	//$idl=mysqli_fetch_array(mysqli_query($l,"select id_lekarza from wizyty where id_wizyty=$idw"))[0];
+	$idl=$_POST['id_lekarza'];
+	$idp=$_POST['id_pacjenta'];
+	$data=$_POST['data'];
 	
 	if(czy_lekarz_przyjmuje()&&czy_termin_wolny()) zapisz();
 	
@@ -66,8 +72,21 @@
 		global $idw;
 		global $gp;
 		global $gk;
-	
-		$q=mysqli_query($l,"update wizyty set godzina_rozpoczecia=\"$gp\",godzina_zakonczenia=\"$gk\" where id_wizyty=$idw");
-		redirect("edytuj_wizyte.php?idw=$idw");
+		global $idl;
+		global $d;
+		global $idp;
+		global $nowa;
+		global $data;
+		
+		if($nowa==0){
+			$q=mysqli_query($l,"update wizyty set godzina_rozpoczecia=\"$gp\",godzina_zakonczenia=\"$gk\",id_lekarza=$idl,data=\"$d\",id_pacjenta=$idp where id_wizyty=$idw");
+			redirect("edytuj_wizyte.php?idw=$idw");
+		}
+		if($nowa==1){
+			$q=mysqli_query($l,"insert into wizyty(id_wizyty,id_lekarza,id_pacjenta,data,godzina_rozpoczecia,godzina_zakonczenia) values(null,\"$idl\",\"$idp\",\"$data\",\"$gp\",\"$gk\")");
+			$newid=mysqli_fetch_array(mysqli_query($l,"select max(id_wizyty) from wizyty"))[0];
+			redirect("edytuj_wizyte.php?idw=$newid");
+		}
+		
 	}
 ?>

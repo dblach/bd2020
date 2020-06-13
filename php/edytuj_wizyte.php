@@ -22,25 +22,26 @@
 		$data='';
 		$gz='';
 		
-		if($idw!=0){
+		//if($idw!=0){
 			$q=mysqli_fetch_assoc(mysqli_query($l,"select wizyty.id_wizyty,wizyty.id_lekarza,wizyty.id_pacjenta,data,time_format(godzina_rozpoczecia,\"%H:%i\") as godzina_rozpoczecia,time_format(godzina_zakonczenia,\"%H:%i\") as godzina_zakonczenia,lekarze.imie as lekarze_imie,lekarze.nazwisko as lekarze_nazwisko,pacjenci.imie as pacjenci_imie,pacjenci.nazwisko as pacjenci_nazwisko from wizyty join lekarze on wizyty.id_lekarza=lekarze.id_lekarza join pacjenci on wizyty.id_pacjenta=pacjenci.id_pacjenta where id_wizyty=$idw"));
 			$idl=$q['id_lekarza'];
 			$l_in=$q['lekarze_imie'].' '.$q['lekarze_nazwisko'];
 			$p_in=$q['pacjenci_imie'].' '.$q['pacjenci_nazwisko'];
 			$gr=$q['godzina_rozpoczecia'];
 			$gz=$q['godzina_zakonczenia'];
+			$idp=$q['id_pacjenta'];
 			$data=date_format(date_create($q['data']),'Y-m-d');	
 			//if($data>1000){
 				$q=mysqli_query($l,"select nazwa_poradni from terminy_przyjec where id_lekarza=$idl and dzien_tygodnia=weekday(\"$data\")+1 and godzina_otwarcia<=\"$gr\" and godzina_zamkniecia>=\"$gz\"");
 				if(mysqli_num_rows($q)==0) $p='NIEPRAWIDŁOWA'; else $p=mysqli_fetch_array($q)[0];
 			//}
-		}
-		else{
-			if(isset($_GET['idl'])) $idl=$_GET['idl'];
-			if(isset($_GET['data'])) $data=$_GET['data']; else $data="1000-01-01";
-			if(isset($_GET['idp'])) $idp=$_GET['idp'];
-			utworz_wizyte();
-		}
+		//}
+		//else{
+			//if(isset($_GET['idl'])) $idl=$_GET['idl'];
+			//if(isset($_GET['data'])) $data=$_GET['data']; else $data="1000-01-01";
+			//if(isset($_GET['idp'])) $idp=$_GET['idp'];
+			//utworz_wizyte();
+		//}
 		
 		function poradnia_dodaj_informacje(){
 			global $p;
@@ -50,7 +51,7 @@
 				echo '</td>';
 			}
 		}
-		
+		/*
 		function utworz_wizyte(){
 			include "redirect.php";
 			global $l;
@@ -65,6 +66,7 @@
 			$idn=mysqli_fetch_array(mysqli_query($l,"select max(id_wizyty) from wizyty"))[0];
 			redirect("edytuj_wizyte.php?idw=$idn");
 		}
+		*/
 	?>
 
 	<a href="index.php">Strona główna</a>
@@ -77,8 +79,7 @@
 		<table>
 			<tr>
 				<td>Lekarz:</td>
-				<td><input type="text" disabled="true" name="lekarz" value="<?php echo $l_in;?>"></td>
-				<td><a href="edytuj_wizyte_zmien_lekarza.php?idw=<?php echo $idw;?>">Zmień</a></td>
+				<td><input type="text" disabled="true" name="lekarz" value="<?php echo $l_in;?>"></td>			
 			</tr>
 			<tr>
 				<td>Poradnia:</td>
@@ -89,17 +90,14 @@
 			<tr>
 				<td>Pacjent:</td>
 				<td><input type="text" disabled="true" name="pacjent" value="<?php echo $p_in;?>"></td>
-				<td><a href="wybierz_pacjenta.php?target=edytuj_wizyte_zmien_pacjenta_zapisz.php?idw=<?php echo $idw;?>">Zmień</a></td>
 			</tr>
 			<tr>
 				<td>Data:</td>
 				<td><input type="date" disabled="true" name="data" value="<?php echo $data;?>"></td>
-				<td><a href="edytuj_wizyte_zmien_date.php?idw=<?php echo $idw;?>">Zmień</a></td>
 			</tr>
 			<tr>
 				<td>Godzina rozpoczęcia:</td>
 				<td><input type="time" disabled="true" name="godzina_rozpoczecia" value="<?php echo $gr;?>"></td>
-				<td><a href="edytuj_wizyte_zmien_godzine.php?idw=<?php echo $idw;?>">Zmień</a></td>
 			</tr>
 			<tr>
 				<td>Godzina zakończenia:</td>
@@ -108,6 +106,8 @@
 		</table>
 		<br>
 		Działania:<br>
+		<a href="edytuj_wizyte_zmien_lekarza.php?idw=<?php echo $idw;?>&nowa=0&nazwa_poradni=<?php echo $p;?>&idp=<?php echo $idp;?>"><button type="button">Edytuj</button></a>
+		&nbsp;
 		<a href="usun_wizyte.php?idw=<?php echo $idw."&target='".$target."'";?>"><button type="button">Usuń</button></a>
 	</form>
 
