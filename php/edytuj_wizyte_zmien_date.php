@@ -53,17 +53,20 @@
 				$data=date("Y-m-d",strtotime($data.'+ 1 day'));
 				$q=mysqli_query($l,"select godzina_otwarcia,godzina_zamkniecia,dzien_tygodnia from terminy_przyjec where id_lekarza=$idl and nazwa_poradni=\"$por\" and dzien_tygodnia=weekday(\"$data\")+1");
 				while($r=mysqli_fetch_array($q)){
-					$go=substr(str_replace(':',',',$r['godzina_otwarcia']),0,5);
-					$gz=substr(str_replace(':',',',$r['godzina_zamkniecia']),0,5);
-					$dt=$r['dzien_tygodnia'];
-					$dd="1000,01,01";
-					$data1=$dnityg[$dt].date("d.m",strtotime($data));
-					echo "if(!daty.includes(\"$data1\")){";
-					echo "daty.push(\"$data1\");";
-					echo "timetable.addLocations(['$data1']);";
-					echo "};";
-					echo "timetable.addEvent('$por','$data1',new Date($dd,$go),new Date($dd,$gz));";
-					echo "clicks.push('$data;$dt;$go');";
+					$u=mysqli_query($l,"select id_urlopu from urlopy where id_lekarza=$idl and data_rozpoczecia<=\"$data\" and data_zakonczenia>=\"$data\"");
+					if(mysqli_num_rows($u)==0){
+						$go=substr(str_replace(':',',',$r['godzina_otwarcia']),0,5);
+						$gz=substr(str_replace(':',',',$r['godzina_zamkniecia']),0,5);
+						$dt=$r['dzien_tygodnia'];
+						$dd="1000,01,01";
+						$data1=$dnityg[$dt].date("d.m",strtotime($data));
+						echo "if(!daty.includes(\"$data1\")){";
+						echo "daty.push(\"$data1\");";
+						echo "timetable.addLocations(['$data1']);";
+						echo "};";
+						echo "timetable.addEvent('$por','$data1',new Date($dd,$go),new Date($dd,$gz));";
+						echo "clicks.push('$data;$dt;$go');";
+					}
 				}	
 			}
 		}
@@ -127,6 +130,7 @@
 		<input type="hidden" name="idw" value="<?php echo $idw;?>"/>
 		<input type="hidden" name="lek" value="<?php echo $_GET['lek'];?>"/>
 		<input type="hidden" name="nowa" value="<?php echo $nowa;?>"/>
+		<input type="hidden" name="idp" value="<?php echo $idp;?>"/>
 		Wyświetl od: <input type="date" name="dp" value="<?php echo $dp;?>"/>&nbsp;
 		do: <input type="date" name="dk" value="<?php echo $dk;?>"/>
 		<input type="submit" value="Odśwież"/>
