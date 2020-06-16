@@ -106,7 +106,7 @@
 		</table>
 		<br>
 		Działania:<br>
-		<a href="edytuj_wizyte_zmien_lekarza.php?idw=<?php echo $idw;?>&nowa=0&nazwa_poradni=<?php echo $p;?>&idp=<?php echo $idp;?>"><button type="button">Edytuj</button></a>
+		<a href="edytuj_wizyte_zmien_lekarza.php?idw=<?php echo $idw;?>&nowa=0&nazwa_poradni=<?php echo $p;?>&idp=<?php echo $idp;?>&dp=<?php echo $data;?>"><button type="button">Edytuj</button></a>
 		&nbsp;
 		<a href="usun_wizyte.php?idw=<?php echo $idw."&target='".$target."'";?>"><button type="button">Usuń</button></a>
 	</form>

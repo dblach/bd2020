@@ -94,6 +94,7 @@
 		<input type="hidden" name="nowa" value="<?php echo $nowa;?>"/>
 		<input type="hidden" name="idp" value="<?php echo $idp;?>"/>
 		<input type="hidden" name="nazwa_poradni" value="<?php echo $_GET['nazwa_poradni'];?>"/>
+		<?php if(isset($_GET['dp'])) echo "<input type=\"hidden\" name=\"dp\" value=\"".$_GET['dp']."\"/>";?>
 		<table border="1" id="tab">
 			<tr>
 				<th>Nazwisko i imię</th>

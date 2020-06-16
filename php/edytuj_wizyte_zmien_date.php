@@ -33,7 +33,7 @@
 			$dp=$_GET['dp'];
 		}
 		if(!isset($_GET['dk'])){
-			$dk=date("Y-m-d",strtotime($dp.'+ 7 days'));
+			$dk=date("Y-m-d",strtotime($dp.'+ 14 days'));
 		}
 		else{
 			$dk=$_GET['dk'];
@@ -46,14 +46,23 @@
 			global $dnityg;
 			global $dp;
 			global $dk;
+			global $bp;
+			global $idw;
 			
-			$data=$dp;
+			if($idw!=0){
+				$wd=mysqli_fetch_array(mysqli_query($l,"select data from wizyty where id_wizyty=$idw"))[0];
+				$wr=mysqli_fetch_array(mysqli_query($l,"select godzina_rozpoczecia from wizyty where id_wizyty=$idw"))[0];
+				$wk=mysqli_fetch_array(mysqli_query($l,"select godzina_zakonczenia from wizyty where id_wizyty=$idw"))[0];
+			}
+			
+			$data=date("Y-m-d",strtotime($dp.'- 1 day'));
 			$nd=round((strtotime($dk)-strtotime($dp))/(60*60*24))+1;
+			$c=0;
 			for($i=0;$i<$nd;$i++){
 				$data=date("Y-m-d",strtotime($data.'+ 1 day'));
 				$q=mysqli_query($l,"select godzina_otwarcia,godzina_zamkniecia,dzien_tygodnia from terminy_przyjec where id_lekarza=$idl and nazwa_poradni=\"$por\" and dzien_tygodnia=weekday(\"$data\")+1");
 				while($r=mysqli_fetch_array($q)){
-					$u=mysqli_query($l,"select id_urlopu from urlopy where id_lekarza=$idl and data_rozpoczecia<=\"$data\" and data_zakonczenia>=\"$data\"");
+					$u=mysqli_query($l,"select id_urlopu from urlopy where id_lekarza=$idl and data_rozpoczecia<=\"$data\" and data_zakonczenia>=\"$data\"");	
 					if(mysqli_num_rows($u)==0){
 						$go=substr(str_replace(':',',',$r['godzina_otwarcia']),0,5);
 						$gz=substr(str_replace(':',',',$r['godzina_zamkniecia']),0,5);
@@ -66,6 +75,18 @@
 						echo "};";
 						echo "timetable.addEvent('$por','$data1',new Date($dd,$go),new Date($dd,$gz));";
 						echo "clicks.push('$data;$dt;$go');";
+						if($idw!=0){
+							$tgo=date('H:i:s',strtotime($r['godzina_otwarcia']));
+							$tgz=date('H:i:s',strtotime($r['godzina_zamkniecia']));
+							$twr=date('H:i:s',strtotime($wr));
+							$twk=date('H:i:s',strtotime($wk));
+							$twd=date('Y-m-d',strtotime($wd));
+							$tdd=date('Y-m-d',strtotime($data));
+							if($tdd==$twd&&$tgo<=$twr&&$tgz>=$twk){
+								$bp=$c;
+							}
+						}
+						$c+=1;
 					}
 				}	
 			}
@@ -155,5 +176,11 @@
 		&nbsp;
 		<button type="button" onclick="submit_form();">Dalej &gt;</button>
 	</form>
+	
+	<?php
+		echo "<script type=\"text/javascript\">";
+		echo "itemclick($bp);";
+		echo "</script>";
+	?>
 </body>
 </html>
