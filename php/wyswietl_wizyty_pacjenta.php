@@ -26,7 +26,12 @@
 		else{
 			$dp=$_POST['dp'];
 		}
-		$dk=date('Y-m-d',strtotime($dp.'+ 7 days'));
+		if(!isset($_POST['dk'])){
+			$dk=date('Y-m-d',strtotime($dp.'+ 14 days'));
+		}
+		else{
+			$dk=$_POST['dk'];
+		}
 		$pacjent_imienazwisko=mysqli_fetch_array(mysqli_query($l,"select concat_ws(' ',imie,nazwisko) from pacjenci where id_pacjenta=$idp"))[0];
 		$gp=mysqli_fetch_array(mysqli_query($l,"select time_format(min(godzina_rozpoczecia),\"%H\") from wizyty where id_pacjenta=$idp and data>=\"$dp\" and data<=\"$dk\""))[0]-1;
 		$gk=23;
@@ -100,7 +105,7 @@
 	<form action="wyswietl_wizyty_pacjenta.php?&idp=<?php echo $idp;?>" method="post">
 		Okres: od <input type="date" name="dp" value="<?php echo $dp;?>"/>
 		&nbsp;
-		do: <input type="date" name="dk" disabled="true" value="<?php echo $dk;?>"/>
+		do: <input type="date" name="dk" value="<?php echo $dk;?>"/>
 		&nbsp;
 		<input type="submit" value="Zmień"/>
 		&nbsp;
