@@ -71,7 +71,6 @@
 	}
 	
 	function zapisz(){
-		include "redirect.php";
 		global $l;
 		global $idw;
 		global $gp;
@@ -84,13 +83,14 @@
 		
 		if($nowa==0){
 			$q=mysqli_query($l,"update wizyty set godzina_rozpoczecia=\"$gp\",godzina_zakonczenia=\"$gk\",id_lekarza=$idl,data=\"$d\",id_pacjenta=$idp where id_wizyty=$idw");
-			redirect("edytuj_wizyte.php?idw=$idw");
+			$t=$idw;
 		}
 		if($nowa==1){
 			$q=mysqli_query($l,"insert into wizyty(id_wizyty,id_lekarza,id_pacjenta,data,godzina_rozpoczecia,godzina_zakonczenia) values(null,\"$idl\",\"$idp\",\"$data\",\"$gp\",\"$gk\")");
-			$newid=mysqli_fetch_array(mysqli_query($l,"select max(id_wizyty) from wizyty"))[0];
-			redirect("edytuj_wizyte.php?idw=$newid");
+			$t=mysqli_fetch_array(mysqli_query($l,"select max(id_wizyty) from wizyty"))[0];
 		}
 		
+		echo "Zmiany zostały zapisane.<br>";
+		echo "<a href=\"edytuj_wizyte.php?idw=$t\"><button type=\"button\">OK</button></a>";
 	}
 ?>
