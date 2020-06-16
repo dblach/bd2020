@@ -11,6 +11,7 @@
 	$idl=$_POST['id_lekarza'];
 	$idp=$_POST['id_pacjenta'];
 	$data=$_POST['data'];
+	$idw=$_POST['id_wizyty'];
 	
 	if(czy_lekarz_przyjmuje()&&czy_termin_wolny()) zapisz();
 	
@@ -45,11 +46,13 @@
 		global $gk;
 		global $d;
 		global $idl;
+		global $idw;
 		$k=true;
-		$q=mysqli_query($l,"select godzina_rozpoczecia,godzina_zakonczenia from wizyty where id_lekarza=$idl and data=\"$d\"");
+		$q=mysqli_query($l,"select id_wizyty,godzina_rozpoczecia,godzina_zakonczenia from wizyty where id_lekarza=$idl and data=\"$d\"");
 		$tgp=strtotime($gp);
 		$tgk=strtotime($gk);
 		while($r=mysqli_fetch_assoc($q)){
+			$ti=$r['id_wizyty'];
 			$wp=$r['godzina_rozpoczecia'];
 			$wk=$r['godzina_zakonczenia'];
 			$twp=strtotime($wp);
@@ -59,7 +62,7 @@
 			}
 			else{
 				// kolizja
-				$k=false;
+				if($ti!=$idw) $k=false;
 			}
 		}
 		if(!$k) echo "<b>Błąd: </b>ta godzina jest już zarezerwowana.<br>";
