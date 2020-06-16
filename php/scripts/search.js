@@ -7,7 +7,7 @@ function search(){
 	term=document.getElementById('search_text').value.toLowerCase();
 	
 	if(term==''){
-		clear();
+		search_clear();
 	}
 	else{
 		for(i=1;i<tab.rows.length;i++){

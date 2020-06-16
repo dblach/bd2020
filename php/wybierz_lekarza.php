@@ -35,6 +35,7 @@
 			echo "<td>".$r['imie']." ".$r['nazwisko']."</td>";
 			echo '<td><a href="wizyty_lekarza.php?idl='.$r['id_lekarza'].'">Wizyty</a></td>';
 			echo '<td><a href="terminy_lekarza.php?idl='.$r['id_lekarza'].'">Terminy przyjęć</td>';
+			echo '<td><a href="urlopy_lekarza.php?idl='.$r['id_lekarza'].'">Urlopy</a></td>';
 			echo '<td><a href="edytuj_lekarza.php?idl='.$r['id_lekarza'].'">Edytuj dane</td>';
 			echo "</tr>";
 		}
