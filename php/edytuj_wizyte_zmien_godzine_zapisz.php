@@ -4,7 +4,8 @@
 	$nowa=$_POST['nowa'];
 	if($nowa=='0') $idw=$_POST['id_wizyty'];
 	$gp=$_POST['godzina_rozpoczecia'];
-	$gk=date('H:i',strtotime($gp.'+30 minutes'));
+	//$gk=date('H:i',strtotime($gp.'+30 minutes'));
+	$gk=$_POST['godzina_zakonczenia'];
 	//$d=mysqli_fetch_array(mysqli_query($l,"select data from wizyty where id_wizyty=$idw"))[0];
 	$d=$_POST['data'];
 	//$idl=mysqli_fetch_array(mysqli_query($l,"select id_lekarza from wizyty where id_wizyty=$idw"))[0];
