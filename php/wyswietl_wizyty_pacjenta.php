@@ -10,6 +10,13 @@
 	<script src="scripts/tabs.js"></script>
 </head>
 <body>
+	<style>
+		.timetable ul.room-timeline li{height:101px !important;}
+		.time-entry{height:100px !important;}
+		.timetable aside li{height:100px !important;}
+		small{height:100%;}
+	</style>
+
 	<?php
 		include "polaczenie.php";
 		$idp=$_GET['idp'];
@@ -38,11 +45,13 @@
 				$gz=substr(str_replace(':',',',$r['godzina_zakonczenia']),0,5);
 				$lek=$r['lekarz'];
 				$idw=$r['id_wizyty'];
+				$n="<font size=\"1px\">".$r['godzina_rozpoczecia']."<br>-".$r['godzina_zakonczenia']."</font><br>$lek";
+				echo "t.push('$n');";
 				echo "if(!loc.includes(\"$dl\")){";
 				echo "loc.push(\"$dl\");";
 				echo "timetable.addLocations(['$dl']);";
 				echo "}";
-				echo "timetable.addEvent('$lek','$dl',new Date($dd,$gr),new Date($dd,$gz));\n";
+				echo "timetable.addEvent('$lek','$dl',new Date($dd,$gr),new Date($dd,$gz));";
 				echo "ids.push(\"$idw\");";
 			}
 		}
@@ -107,6 +116,7 @@
 	<div id="Widoktygodnia" class="tabcontent">
 		<div class="timetable"></div>
 		<script>
+			t=new Array();
 			var timetable=new Timetable();
 			var loc=[];
 			var ids=[];
@@ -115,6 +125,8 @@
 			var renderer=new Timetable.Renderer(timetable);
 			renderer.draw('.timetable');
 			add_onclick("&target='wyswietl_wizyty_pacjenta.php?dp=<?php echo $dp;?>&idp=<?php echo $idp;?>'");
+			e=document.getElementsByTagName('small');
+			for(i=0;i<t.length;i++) e[i].innerHTML=t[i];
 		</script>
 	</div>
 	
