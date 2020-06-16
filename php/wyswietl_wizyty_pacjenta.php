@@ -47,6 +47,7 @@
 				$idw=$r['id_wizyty'];
 				$n="<font size=\"1px\">".$r['godzina_rozpoczecia']."<br>-".$r['godzina_zakonczenia']."</font><br>$lek";
 				echo "t.push('$n');";
+				echo "hov.push('".$r['godzina_rozpoczecia']."-".$r['godzina_zakonczenia']." $lek');";
 				echo "if(!loc.includes(\"$dl\")){";
 				echo "loc.push(\"$dl\");";
 				echo "timetable.addLocations(['$dl']);";
@@ -117,6 +118,7 @@
 		<div class="timetable"></div>
 		<script>
 			t=new Array();
+			hov=new Array();
 			var timetable=new Timetable();
 			var loc=[];
 			var ids=[];
@@ -126,7 +128,11 @@
 			renderer.draw('.timetable');
 			add_onclick("&target='wyswietl_wizyty_pacjenta.php?dp=<?php echo $dp;?>&idp=<?php echo $idp;?>'");
 			e=document.getElementsByTagName('small');
-			for(i=0;i<t.length;i++) e[i].innerHTML=t[i];
+			f=document.getElementsByClassName('room-timeline')[0].getElementsByTagName('span');
+			for(i=0;i<t.length;i++){
+				e[i].innerHTML=t[i];
+				f[i].setAttribute('title',hov[i]);
+			}
 		</script>
 	</div>
 	
