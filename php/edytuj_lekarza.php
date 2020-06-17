@@ -11,13 +11,9 @@
 		$imie='';
 		$nazwisko='';
 		
-		if($idl=='0'){
-			utworz_lekarza();
-		}
-		else{
-			pobierz_dane();
-		}
+		if($idl!='0') pobierz_dane();
 		
+		/*
 		function utworz_lekarza(){
 			global $l;
 			include "redirect.php";
@@ -25,6 +21,7 @@
 			$newidl=mysqli_fetch_array(mysqli_query($l,"select max(id_lekarza) from lekarze"))[0];
 			redirect("edytuj_lekarza.php?idl=$newidl");
 		}
+		*/
 		
 		function pobierz_dane(){
 			global $l;
@@ -64,8 +61,7 @@
 		<input type="hidden" name="idl" value="<?php echo $idl;?>"/>
 		<input type="submit" value="Zapisz"/>
 		&nbsp;
-		<a href="usun_lekarza.php?idl=<?php echo $idl;?>"><button type="button">Usuń</button></a>
-		&nbsp;
+		<?php if($idl!=0) echo "<a href=\"usun_lekarza.php?idl=$idl\"><button type=\"button\">Usuń</button></a>&nbsp;"; ?>
 		<a href="wybierz_lekarza.php"><button type="button">Anuluj</button></a>
 	</form>
 </body>

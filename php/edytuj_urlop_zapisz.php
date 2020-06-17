@@ -7,7 +7,7 @@
 	$dk=$_POST['dk'];
 	
 	if($idu==0){
-		$q=mysqli_query($l,"insert into urlopy(id_urlopu,id_lekarza,data_rozpoczecia,data_zakonczenia) values('',$idl,\"$dp\",\"$dk\")");
+		$q=mysqli_query($l,"insert into urlopy(id_urlopu,id_lekarza,data_rozpoczecia,data_zakonczenia) values(null,$idl,\"$dp\",\"$dk\")");
 	}
 	else{
 		$q=mysqli_query($l,"update urlopy set data_rozpoczecia=\"$dp\",data_zakonczenia=\"$dk\" where id_urlopu=$idu");

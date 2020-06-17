@@ -10,7 +10,7 @@
 	$pomieszczenie=$_POST['pomieszczenie'];
 	
 	if($idt==0){
-		$q=mysqli_query($l,"insert into terminy_przyjec(id_terminu,id_lekarza,nazwa_poradni,dzien_tygodnia,godzina_otwarcia,godzina_zamkniecia,pomieszczenie) values('',$idl,\"$poradnia\",$dt,\"$go\",\"$gz\",\"$pomieszczenie\")");
+		$q=mysqli_query($l,"insert into terminy_przyjec(id_terminu,id_lekarza,nazwa_poradni,dzien_tygodnia,godzina_otwarcia,godzina_zamkniecia,pomieszczenie) values(null,$idl,\"$poradnia\",$dt,\"$go\",\"$gz\",\"$pomieszczenie\")");
 	}
 	else{
 		$q=mysqli_query($l,"update terminy_przyjec set nazwa_poradni=\"$poradnia\",dzien_tygodnia=$dt,godzina_otwarcia=\"$go\",godzina_zamkniecia=\"$gz\",pomieszczenie=\"$pomieszczenie\" where id_terminu=$idt");

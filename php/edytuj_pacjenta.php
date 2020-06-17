@@ -16,13 +16,9 @@
 		$pesel='';
 		$telefon='';
 		
-		if($idp=='0'){
-			utworz_pacjenta();
-		}
-		else{
-			pobierz_dane();
-		}
+		if($idp!='0') pobierz_dane();
 		
+		/*
 		function utworz_pacjenta(){
 			global $l;
 			include "redirect.php";
@@ -30,6 +26,7 @@
 			$newidp=mysqli_fetch_array(mysqli_query($l,"select max(id_pacjenta) from pacjenci"))[0];
 			redirect("edytuj_pacjenta.php?idp=$newidp");
 		}
+		*/
 		
 		function pobierz_dane(){
 			global $l;
@@ -99,8 +96,7 @@
 		<input type="hidden" name="idp" value="<?php echo $idp;?>"/>
 		<input type="submit" value="Zapisz"/>
 		&nbsp;
-		<a href="usun_pacjenta.php?idp=<?php echo $idp;?>"><button type="button">Usuń</button></a>
-		&nbsp;
+		<?php if($idp!=0) echo "<a href=\"usun_pacjenta.php?idp=$idp\"><button type=\"button\">Usuń</button></a>&nbsp;";?>
 		<a href="wybierz_pacjenta.php?target=edytuj_pacjenta.php?"><button type="button">Anuluj</button></a>
 	</form>
 </body>
